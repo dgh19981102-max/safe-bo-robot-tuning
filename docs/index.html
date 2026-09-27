@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Safe Bayesian Optimisation for Robot-Arm Controller Tuning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #154f58;
+    --teal-ink: #1b4a52;
+    --pill: #d6e3e3;
+    --paper: #f2f1ec;
+    --card: #ffffff;
+    --line: #dedbd3;
+    --text: #454a4c;
+    --muted: #6d7375;
+    --head: #1f2a2c;
+    --accent: #1f6f7a;
+    --serif: "Roboto Slab", Georgia, "Times New Roman", serif;
+    --sans: "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; background: var(--paper); color: var(--text);
+    font-family: var(--sans); font-size: 17px; line-height: 1.65;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
+
+  header.hero { background: var(--teal); color: #fff; padding: calc(34px + env(safe-area-inset-top, 0px)) 0 44px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; padding: 0; list-style: none; }
+  .tags li {
+    background: var(--pill); color: var(--teal-ink); font-weight: 600;
+    font-size: 13.5px; letter-spacing: .04em; text-transform: uppercase;
+    padding: 6px 13px; border-radius: 4px;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 700; margin: 0 0 16px;
+    font-size: clamp(32px, 5.2vw, 50px); line-height: 1.13; letter-spacing: -.005em;
+  }
+  .sub { margin: 0; color: #cfe0e1; font-size: 17.5px; max-width: 64em; line-height: 1.55; }
+
+  main { padding: 40px 0 72px; }
+  p { max-width: 70ch; }
+  .lead { margin-top: 0; font-size: 18px; color: var(--text); max-width: none; }
+
+  figure.panel {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    margin: 30px 0; padding: 18px 18px 12px;
+  }
+  figure.panel img { display: block; width: 100%; height: auto; }
+  figure.panel figcaption { color: var(--muted); font-size: 14.5px; padding: 10px 6px 4px; }
+
+  h2 {
+    font-family: var(--serif); font-weight: 600; color: var(--head);
+    font-size: 26px; line-height: 1.25; margin: 52px 0 14px;
+  }
+  h3 { font-size: 17px; color: var(--head); margin: 0 0 6px; font-weight: 600; }
+
+  .approach { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 26px 40px; margin-top: 18px; }
+  .approach > div { border-left: 3px solid var(--accent); padding-left: 16px; }
+  .approach p { margin: 0; font-size: 16px; }
+
+  .table-wrap { overflow-x: auto; background: var(--card); border: 1px solid var(--line); border-radius: 10px; margin-top: 18px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 640px; }
+  th, td { text-align: right; padding: 11px 16px; border-bottom: 1px solid #ecebe6; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--muted); font-weight: 500; font-size: 13.5px; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tr.ours td { color: var(--teal-ink); font-weight: 600; background: #f1f6f6; }
+  td.gain { color: var(--accent); }
+
+  .headline-result { font-size: 18px; color: var(--head); margin: 22px 0 0; }
+
+  ul.plain { padding-left: 1.1em; max-width: 70ch; }
+  ul.plain li { margin: 6px 0; }
+  code { font-size: .92em; background: #e7e5de; padding: 1px 6px; border-radius: 3px; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 14.5px; padding: 22px 0 36px; }
+
+  @media (max-width: 720px) {
+    body { font-size: 16px; }
+    .approach { grid-template-columns: 1fr; }
+    figure.panel { padding: 10px 8px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <ul class="tags">
+      <li>Python</li>
+      <li>Bayesian Optimisation</li>
+      <li>Gaussian Processes</li>
+      <li>Robot Control</li>
+      <li>Safe Learning</li>
+    </ul>
+    <h1>Safe Bayesian Optimisation for Robot-Arm Controller Tuning</h1>
+    <p class="sub">Machine learning for automation and R&amp;D teams. Six PID gains tuned automatically in a few dozen trials, without shaking the arm or driving it into its surroundings, and re-tuned quickly when the payload changes.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="lead">Servo gains on robot arms are still tuned by hand, and every new payload means doing it again. Letting an algorithm experiment on the machine is attractive, but a bad trial can make the arm oscillate violently or sag into a fixture. This case builds a Gaussian-process model of both performance and safety, and only ever tests gains that the model is confident are safe.</p>
+
+  <figure class="panel">
+    <img src="figures/fig_overview.png" alt="Three charts. Safe BO reaches the lowest cost fastest; only 2 percent of its trials exceed the safety limit versus 13 to 74 percent for other methods; after payload changes, warm-started safe BO stays closest to the optimum.">
+    <figcaption>Left: best safe cost versus number of experiments at 1 kg payload. Centre: safety index of every trial; values above 1 are unsafe. Right: after each payload change, gap to the optimum once 10 re-tuning trials are used. All results are over 20 independent runs.</figcaption>
+  </figure>
+
+  <h2>What the model does</h2>
+  <div class="approach">
+    <div>
+      <h3>A realistic test rig</h3>
+      <p>A two-link arm in a vertical plane with a tip payload, joint friction, torque limits, a noisy 16-bit encoder and a one-sample control delay. Each trial releases the brake, performs a point-to-point move, holds, and absorbs an external push.</p>
+    </div>
+    <div>
+      <h3>Performance and safety</h3>
+      <p>Cost combines tracking error with torque ripple. A trial is unsafe if the error exceeds 8° or the torque ripple exceeds its limit, so both too-soft and too-aggressive gains are ruled out. Only 24% of random gain sets pass.</p>
+    </div>
+    <div>
+      <h3>Safe Bayesian optimisation</h3>
+      <p>Two Gaussian processes, written from scratch, model cost and safety. New gains are tried only if the safety upper confidence bound stays below the limit and they lie near gains already proven safe. Expected improvement picks among them.</p>
+    </div>
+    <div>
+      <h3>Warm start after payload changes</h3>
+      <p>Payload becomes an extra model input, so every earlier experiment informs the next tuning round. Gains the model predicts to be safe at the new payload serve as extra starting points.</p>
+    </div>
+  </div>
+
+  <h2>Results</h2>
+  <p>Four tuning strategies start from the same conservative commissioning gains at 1 kg and get 50 experiments each.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Unsafe trials</th><th>Gap to optimum after 15 trials</th><th>After 50 trials</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Random search</td><td>73.8%</td><td>80.2%</td><td>35.1%</td></tr>
+        <tr><td>Standard Bayesian optimisation</td><td>36.8%</td><td>81.1%</td><td>22.3%</td></tr>
+        <tr><td>CMA-ES</td><td>12.7%</td><td>27.4%</td><td>13.9%</td></tr>
+        <tr class="ours"><td>Safe Bayesian optimisation</td><td>1.8%</td><td>16.6%</td><td>4.1%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="headline-result">Safe BO was both the safest and the fastest here. Its tuned gains halve the RMS tracking error of the commissioning gains, from 1.12° to 0.60°, with no extra torque ripple.</p>
+
+  <figure class="panel">
+    <img src="figures/fig_response.png" alt="Tracking error and torque of both joints for commissioning gains and safe-BO-tuned gains. The tuned controller has smaller error during the move and recovers faster from the push.">
+    <figcaption>Same experiment with commissioning gains (dashed) and safe-BO-tuned gains (solid). The shaded band marks the external push.</figcaption>
+  </figure>
+
+  <p>When the payload changes from 1 kg through 2.5, 1.75, 0.5 and 2 kg, keeping the old gains leaves the arm 21–40% from optimal and unsafe in 15% of runs at 2.5 kg. Re-tuning from scratch recovers some of that; re-using earlier experiments recovers most of it, reaching within 13–17% of the optimum in 10 trials.</p>
+
+  <figure class="panel">
+    <img src="figures/fig_payload_sequence.png" alt="Best safe cost across five payload stages. The warm-started method drops faster than the cold start in the later stages.">
+    <figcaption>Best safe cost within each payload stage, median of 20 runs. Dotted lines show the reference optimum for each payload.</figcaption>
+  </figure>
+
+  <h2>Deliverables</h2>
+  <ul class="plain">
+    <li>Python package with the arm model, PID controller, Gaussian process and five tuning strategies, each in its own module.</li>
+    <li>Gaussian process implemented from first principles, checked against finite-difference gradients and scikit-learn.</li>
+    <li>Unit tests for energy conservation, gravity torque and model correctness.</li>
+    <li>Reproducible experiment scripts with raw traces and a summary for every figure.</li>
+  </ul>
+  <p><a href="https://github.com/dgh19981102-max/safe-bo-robot-tuning">View the code repository</a></p>
+</main>
+
+<footer>
+  <div class="wrap">Simulation study. Safety is probabilistic: 1.8% of safe-BO trials slightly exceeded the limit, with the worst at 1.5× the threshold.</div>
+</footer>
+
+</body>
+</html>
