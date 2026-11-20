@@ -1,6 +1,7 @@
-numpy>=1.24
-scipy>=1.10
-matplotlib>=3.7
-cma>=3.3
-scikit-learn>=1.2   # tests only
-pytest>=7           # tests only
+# Pinned exact versions (verified 2026-11-20 on Python 3.12: pip install + full test suite pass).
+numpy==2.5.5
+scipy==1.18.1
+matplotlib==3.11.2
+cma==4.6.0
+scikit-learn==1.9.1   # tests only
+pytest==9.2.0         # tests only
